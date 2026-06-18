@@ -66,6 +66,7 @@ interface MarketingOverview {
   total_purchases: string;
   capi_sent: string;
   capi_issues: string;
+  organic: string;
 }
 
 interface PixelStat {
@@ -636,6 +637,7 @@ function MarketingPanel() {
         { label: 'Purchases',   value: overview.total_purchases, color: '#15803D', bg: '#F0FDF4', icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' },
         { label: 'CAPI Sent',   value: overview.capi_sent,       color: '#1D4ED8', bg: BLUE_LT,   icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
         { label: 'CAPI Issues', value: overview.capi_issues,     color: '#B91C1C', bg: '#FEF2F2', icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' },
+        { label: 'Organic (No Pixel)', value: overview.organic,  color: '#475569', bg: '#F8FAFC', icon: 'M12 4.5c-4.5 0-8 3.5-8 7.5s3.5 7.5 8 7.5 8-3.5 8-7.5-3.5-7.5-8-7.5zm0 0v15M4 12h16' },
       ]
     : [];
 
@@ -751,9 +753,9 @@ function MarketingPanel() {
           </div>
 
           {/* Stat cards */}
-          <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="grid grid-cols-4 gap-3 mb-6">
             {loadingStats
-              ? Array.from({ length: 3 }).map((_, i) => (
+              ? Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="rounded-[14px] px-4 py-4 animate-pulse bg-slate-100" style={{ height: 80 }} />
                 ))
               : statCards.map((c) => (
@@ -1257,6 +1259,7 @@ export default function AdminDashboard() {
                     disabled={filterClients.length === 0}
                   >
                     <option value="">{filterClients.length === 0 ? 'No MediaBuyers' : 'All MediaBuyers'}</option>
+                    <option value="organic">Organic (No Pixel)</option>
                     {filterClients.map((c) => (
                       <option key={c.id} value={String(c.id)}>{c.name}</option>
                     ))}

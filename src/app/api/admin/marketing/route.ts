@@ -48,9 +48,10 @@ export async function GET(req: NextRequest) {
     const [overviewRes, byPixelRes, byMetaCampaignRes] = await Promise.all([
       pool.query(`
         SELECT
-          COUNT(*)                                         AS total_purchases,
-          COUNT(*) FILTER (WHERE capi_sent = true)        AS capi_sent,
-          COUNT(*) FILTER (WHERE capi_sent = false)       AS capi_issues
+          COUNT(*)                                                                       AS total_purchases,
+          COUNT(*) FILTER (WHERE capi_sent = true)                                       AS capi_sent,
+          COUNT(*) FILTER (WHERE capi_sent = false AND campaign_slug IS NOT NULL)        AS capi_issues,
+          COUNT(*) FILTER (WHERE campaign_slug IS NULL)                                  AS organic
         FROM payments
         WHERE ${overviewWhere}
       `),

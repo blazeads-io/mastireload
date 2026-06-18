@@ -35,7 +35,9 @@ export async function GET(req: NextRequest) {
     dataParams.push(statusFilter);
     dataConditions.push(`p.status = $${dataParams.length}`);
   }
-  if (clientId) {
+  if (clientId === 'organic') {
+    dataConditions.push(`p.campaign_slug IS NULL`);
+  } else if (clientId) {
     dataParams.push(clientId);
     dataConditions.push(`c.id = $${dataParams.length}`);
   }
@@ -61,7 +63,9 @@ export async function GET(req: NextRequest) {
     countParams.push(statusFilter);
     countConditions.push(`p.status = $${countParams.length}`);
   }
-  if (clientId) {
+  if (clientId === 'organic') {
+    countConditions.push(`p.campaign_slug IS NULL`);
+  } else if (clientId) {
     countParams.push(clientId);
     countConditions.push(`c.id = $${countParams.length}`);
   }
@@ -83,7 +87,9 @@ export async function GET(req: NextRequest) {
     statsParams.push(to);
     statsConditions.push(`(p.created_at AT TIME ZONE 'Asia/Kolkata')::date <= $${statsParams.length}::date`);
   }
-  if (clientId) {
+  if (clientId === 'organic') {
+    statsConditions.push(`p.campaign_slug IS NULL`);
+  } else if (clientId) {
     statsParams.push(clientId);
     statsConditions.push(`c.id = $${statsParams.length}`);
   }
